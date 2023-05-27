@@ -2,7 +2,7 @@
 requires-python = ">=3.10"
 name = "casa-web-searcher"
 version = "0.0.1"
-dependencies = ["beautifulsoup4"]
+dependencies = ["beautifulsoup4", "requests"]
 
 [project.optional-dependencies]
 dev = ["pip-tools"]
