@@ -5,4 +5,4 @@ version = "0.0.1"
 dependencies = ["beautifulsoup4", "requests"]
 
 [project.optional-dependencies]
-dev = ["pip-tools", "black"]
+dev = ["pip-tools", "black", "isort"]
