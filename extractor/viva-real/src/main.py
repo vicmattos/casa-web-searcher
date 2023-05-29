@@ -1,4 +1,5 @@
 import configparser
+import csv
 import os
 import pathlib
 import sys
@@ -13,10 +14,13 @@ def main():
     for key in config["URLs.viva-real"]:
         html = fetch_html(config["URLs.viva-real"][key])
         soup = bs4.BeautifulSoup(html, features="html.parser")
-        for div in soup.find_all(
-            lambda tag: tag.get("id").isnumeric() if "id" in tag.attrs else False
-        ):
-            print(extract_values_from_div(div))
+        with open(f'data/{key}.csv', 'w') as f:
+            writer = csv.writer(f)
+            for div in soup.find_all(
+                lambda tag: tag.get("id").isnumeric() if "id" in tag.attrs else False
+            ):
+                values = extract_values_from_div(div)
+                writer.writerow(values)
 
 
 def fetch_html(url: str) -> str:
