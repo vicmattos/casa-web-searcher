@@ -9,14 +9,14 @@ import requests
 
 
 def main():
-    execution_name = "butanta-4000-3quartos"
     parser = configparser.ConfigParser()
     parser.read("settings.cfg")
-    config = parser[execution_name]
-    data = extract_data(execution_name, config.get("url"))
-    with open(f"data/{execution_name}.csv", "w") as f:
-        writer = csv.writer(f)
-        writer.writerows(data)
+    for execution_name in parser.sections():
+        config = parser[execution_name]
+        data = extract_data(execution_name, config.get("url"))
+        with open(f"data/{execution_name}.csv", "w") as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
 
 
 def extract_data(extraction_name: str, url: str) -> list:
