@@ -14,9 +14,8 @@ def main():
     for execution_name in parser.sections():
         config = parser[execution_name]
         data = extract_data(execution_name, config.get("url"))
-        with open(f"data/{execution_name}.csv", "w") as f:
-            writer = csv.writer(f)
-            writer.writerows(data)
+        file_name = pathlib.Path(f"data/{execution_name}.csv")
+        save_csv(file_name, data)
 
 
 def extract_data(extraction_name: str, url: str) -> list:
@@ -44,6 +43,12 @@ def extract_values_from_div(div: bs4.element.Tag) -> tuple:
     garages = div.find(class_="property-card__detail-garage").text.strip()
     rent = div.find(class_="property-card__values").text.strip()
     return (title, address, area, rooms, bathrooms, garages, rent)
+
+
+def save_csv(file: pathlib.Path, data: list) -> None:
+    with file.open("w") as f:
+        writer = csv.writer(f)
+        writer.writerows(data)
 
 
 if __name__ == "__main__":
