@@ -13,12 +13,12 @@ def main():
     parser.read("settings.cfg")
     for settings_name in parser.sections():
         config = parser[settings_name]
-        data = extract_data(settings_name, config.get("url"))
+        data = extract_data(config.get("url"))
         file_name = pathlib.Path(f"data/{settings_name}.csv")
         save_csv(file_name, data)
 
 
-def extract_data(extraction_name: str, url: str) -> list:
+def extract_data(url: str) -> list:
     data = []
     html = fetch_html(url)
     soup = bs4.BeautifulSoup(html, features="html.parser")
