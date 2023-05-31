@@ -9,18 +9,25 @@ import requests
 
 
 def main():
-    config = configparser.ConfigParser()
-    config.read("settings.cfg")
-    for key in config["URLs.viva-real"]:
-        html = fetch_html(config["URLs.viva-real"][key])
-        soup = bs4.BeautifulSoup(html, features="html.parser")
-        with open(f'data/{key}.csv', 'w') as f:
-            writer = csv.writer(f)
-            for div in soup.find_all(
-                lambda tag: tag.get("id").isnumeric() if "id" in tag.attrs else False
-            ):
-                values = extract_values_from_div(div)
-                writer.writerow(values)
+    execution_name = "butanta-4000-3quartos"
+    parser = configparser.ConfigParser()
+    parser.read("settings.cfg")
+    config = parser[execution_name]
+    data = extract_data(execution_name, config.get("url"))
+    with open(f"data/{execution_name}.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(data)
+
+
+def extract_data(extraction_name: str, url: str) -> list:
+    data = []
+    html = fetch_html(url)
+    soup = bs4.BeautifulSoup(html, features="html.parser")
+    for div in soup.find_all(
+        lambda tag: tag.get("id").isnumeric() if "id" in tag.attrs else False
+    ):
+        data.append(extract_values_from_div(div))
+    return data
 
 
 def fetch_html(url: str) -> str:
