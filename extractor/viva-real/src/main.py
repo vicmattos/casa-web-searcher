@@ -11,10 +11,10 @@ import requests
 def main():
     parser = configparser.ConfigParser()
     parser.read("settings.cfg")
-    for execution_name in parser.sections():
-        config = parser[execution_name]
-        data = extract_data(execution_name, config.get("url"))
-        file_name = pathlib.Path(f"data/{execution_name}.csv")
+    for settings_name in parser.sections():
+        config = parser[settings_name]
+        data = extract_data(settings_name, config.get("url"))
+        file_name = pathlib.Path(f"data/{settings_name}.csv")
         save_csv(file_name, data)
 
 
